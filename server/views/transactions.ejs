@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transaction - Débit</title>
+    <link rel="stylesheet" href="/stylesheets/transactions.css" />
+  </head>
+  <body>
+    <div class="container">
+      <% let fill = typeof autoFill !== 'undefined' ? autoFill : {}; %> <% if
+      (typeof message !== 'undefined' && message) { %>
+      <div class="alert-capsule <%= message.type %>">
+        <h2><%= message.type === 'success' ? 'Succès !' : 'Erreur' %></h2>
+        <p><%= message.text %></p>
+        <a href="/transactions" class="btn-return">Retour</a>
+      </div>
+      <% } else { %>
+
+      <h1>Effectuer une Transaction de Débit</h1>
+      <form action="/transactions" method="POST">
+        <% if (Object.keys(fill).length > 0) { %>
+        <input type="hidden" name="from" value="esp32" />
+        <% } %>
+
+        <label for="card_uid">UID de la Carte:</label>
+        <input
+          type="text"
+          name="card_uid"
+          id="card_uid"
+          required
+          value="<%= fill.card_uid || '' %>"
+        />
+
+        <label for="pin">PIN:</label>
+        <input
+          type="password"
+          name="pin"
+          id="pin"
+          required
+          value="<%= fill.pin || '' %>"
+        />
+
+        <label for="amount">Montant:</label>
+        <input
+          type="number"
+          name="amount"
+          id="amount"
+          required
+          step="0.01"
+          value="<%= fill.amount || '' %>"
+        />
+
+        <button type="submit">Effectuer la Transaction</button>
+      </form>
+      <% } %>
+    </div>
+
+    <script>
+      const evtSource = new EventSource("/transactions/events");
+      evtSource.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        const container = document.querySelector(".container");
+
+        // Supprimer tout le contenu
+        container.innerHTML = "";
+
+        const capsule = document.createElement("div");
+        capsule.className = "alert-capsule " + data.status;
+
+        capsule.innerHTML = `
+      <h2>${data.status === "success" ? "Succès !" : "Erreur"}</h2>
+      <p>${data.message}</p>
+      <a href="/transactions" class="btn-return">Retour</a>
+    `;
+
+        container.appendChild(capsule);
+      };
+    </script>
+  </body>
+</html>
