@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "dev": "nodemon app.js"
+    "dev": "nodemon ./bin/www",
+    "start": "nodemon app.js"
   },
   "dependencies": {
     "axios": "^1.10.0",

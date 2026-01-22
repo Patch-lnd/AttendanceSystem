@@ -5,6 +5,8 @@ const db = require("../db");
 // Cette fonction sera appelée quand une carte RFID est badgée
 // Elle est exportée pour être utilisée par une route
 exports.handleAttendance = (req, res) => {
+       console.log("Route /api/attendance atteinte");
+    console.log(req.body);
 
     // 1) On récupère l’UID RFID envoyé dans le corps de la requête
     // Exemple attendu : { "rfid_uid": "A1B2C3D4" }

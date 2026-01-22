@@ -1,52 +1,55 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-require('dotenv').config();
+const express = require("express");
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+// On importe CORS pour autoriser les requêtes externes (ESP32, navigateur)
+const cors = require("cors");
 
+// On charge les variables d’environnement depuis le fichier .env
+require("dotenv").config();
+
+// On crée l’application Express
 const app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// =====================
+// MIDDLEWARES
+// =====================
 
-app.use(logger('dev'));
+// Autorise les requêtes venant d’autres appareils (ESP32, frontend) CORS: Cross-Origin Resource Sharing
+app.use(cors());
+
+// Permet de lire le JSON envoyé dans les requêtes POST
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
+// Permet de lire les données envoyées par formulaire (optionnel ici)
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// =====================
+// ROUTES
+// =====================
 
-const cardRouter = require('./routes/api/card');
-app.use('/card', cardRouter); // Toutes les API commerceront par /card
+// Importation des routes de présence
+const attendanceRoutes = require("./routes/attendanceRoutes");
 
-app.use('/', indexRouter)
-app.use('/transactions', require('./routes/api/transactions'));
+// Toutes les routes définies dans attendanceRoutes
+// seront accessibles via /api/...
+app.use("/api", attendanceRoutes);
 
-const port = process.env.PORT || 3000;
-app.set('port', port)
+// =====================
+// ROUTE DE TEST
+// =====================
 
- // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Route simple pour vérifier que le serveur fonctionne
+app.get("/", (req, res) => {
+    res.send("Attendance System Server is running");
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// =====================
+// LANCEMENT DU SERVEUR
+// =====================
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-}); 
+// Port défini dans .env ou 3000 par défaut
+const PORT = process.env.PORT;
 
-module.exports = app;
+// Démarrage du serveur
+app.listen(PORT, () => {
+    console.log(`Serveur lancé sur le port ${PORT}`);
+});

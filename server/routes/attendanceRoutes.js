@@ -16,4 +16,5 @@ router.post("/attendance", attendanceController.handleAttendance);
 
 // On exporte le routeur
 // Pour pouvoir l’utiliser dans app.js
+
 module.exports = router;
