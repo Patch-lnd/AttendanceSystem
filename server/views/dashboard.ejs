@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Dashboard</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-8">
+
+<!-- Titre principal -->
+<h1 class="text-3xl font-bold text-center mb-8">
+    Tableau de Présence
+</h1>
+
+<!-- Grille des cartes -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <% users.forEach(user => { %>
+
+        <!-- Carte utilisateur -->
+        <div class="
+            p-6 rounded-xl shadow-lg text-white transition-all
+            <%= user.is_present ? 'bg-green-500' : 'bg-red-500' %>
+        ">
+
+            <!-- Nom -->
+            <h2 class="text-xl font-semibold">
+                <%= user.full_name %>
+            </h2>
+
+            <!-- UID -->
+            <p class="text-sm mt-2">
+                UID : <%= user.rfid_uid %>
+            </p>
+
+            <!-- Statut -->
+            <p class="mt-4 text-lg font-bold">
+                <%= user.is_present ? 'PRÉSENT' : 'ABSENT' %>
+            </p>
+
+        </div>
+
+    <% }); %>
+
+</div>
+
+</body>
+</html>

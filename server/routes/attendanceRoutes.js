@@ -17,4 +17,8 @@ router.post("/attendance", attendanceController.handleAttendance);
 // On exporte le routeur
 // Pour pouvoir l’utiliser dans app.js
 
+
+// Route pour afficher le dashboard (interface utilisateur)
+router.get("/dashboard", attendanceController.renderDashboard);
+
 module.exports = router;

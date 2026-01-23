@@ -9,6 +9,15 @@ require("dotenv").config();
 // On crée l’application Express
 const app = express();
 
+const path = require("path");
+
+// On indique à Express que l'on utilise EJS comme moteur de vues
+app.set("view engine", "ejs");
+
+// On précise où se trouvent les fichiers HTML (views)
+app.set("views", path.join(__dirname, "views"));
+
+
 // =====================
 // MIDDLEWARES
 // =====================

@@ -80,3 +80,28 @@ exports.handleAttendance = (req, res) => {
         });
     });
 };
+
+/**
+ * Affiche la page dashboard avec la liste des utilisateurs
+ */
+exports.renderDashboard = (req, res) => {
+
+    // Requête SQL pour récupérer tous les utilisateurs
+    const query = "SELECT * FROM users";
+
+    // Exécution de la requête
+    db.query(query, (err, results) => {
+
+        // En cas d’erreur base de données
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Erreur lors du chargement du dashboard");
+        }
+
+        // On envoie les utilisateurs à la vue dashboard.ejs
+        res.render("dashboard", {
+            users: results
+        });
+    });
+};
+
