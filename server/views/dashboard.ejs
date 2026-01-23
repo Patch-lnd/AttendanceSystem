@@ -4,42 +4,66 @@
     <meta charset="UTF-8">
     <title>Attendance Dashboard</title>
 
-    <!-- Tailwind CSS via CDN -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen p-8">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen p-8">
 
-<!-- Titre principal -->
-<h1 class="text-3xl font-bold text-center mb-8">
+<!-- ================= TITRE ================= -->
+<h1 class="text-3xl font-bold text-center text-white mb-10">
     Tableau de Présence
 </h1>
 
-<!-- Grille des cartes -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- ================= GRILLE ================= -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
 
     <% users.forEach(user => { %>
 
-        <!-- Carte utilisateur -->
+        <!-- ================= CARTE UTILISATEUR ================= -->
         <div class="
-            p-6 rounded-xl shadow-lg text-white transition-all
-            <%= user.is_present ? 'bg-green-500' : 'bg-red-500' %>
+            relative overflow-hidden
+            p-6 rounded-2xl
+            text-white
+            transition-all duration-300
+            hover:scale-[1.03]
+
+            backdrop-blur-sm
+            border border-white/30
+
+            <%= user.is_present 
+                ? 'bg-green-500/20 shadow-lg shadow-green-500/30'
+                : 'bg-red-500/20 shadow-lg shadow-red-500/30'
+            %>
         ">
 
-            <!-- Nom -->
-            <h2 class="text-xl font-semibold">
-                <%= user.full_name %>
-            </h2>
+            <!-- ===== Reflet glass (effet lumière) ===== -->
+            <div class="
+                pointer-events-none
+                absolute top-0 left-0 w-full h-full
+                bg-gradient-to-br from-white/30 via-white/10 to-transparent
+                opacity-40
+            "></div>
 
-            <!-- UID -->
-            <p class="text-sm mt-2">
-                UID : <%= user.rfid_uid %>
-            </p>
+            <!-- ================= CONTENU ================= -->
+            <div class="relative z-10">
 
-            <!-- Statut -->
-            <p class="mt-4 text-lg font-bold">
-                <%= user.is_present ? 'PRÉSENT' : 'ABSENT' %>
-            </p>
+                <!-- Nom -->
+                <h2 class="text-xl font-semibold tracking-wide">
+                    <%= user.full_name %>
+                </h2>
+
+                <!-- UID -->
+                <p class="text-sm mt-2 opacity-90">
+                    UID : <%= user.rfid_uid %>
+                </p>
+
+                <!-- Statut -->
+                <p class="mt-6 text-lg font-bold tracking-widest">
+                    <%= user.is_present ? 'PRÉSENT' : 'ABSENT' %>
+                </p>
+
+            </div>
 
         </div>
 
