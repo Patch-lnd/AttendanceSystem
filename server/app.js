@@ -71,6 +71,6 @@ app.set("io", io);
 const PORT = process.env.PORT;
 
 // Démarrage du serveur
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Serveur lancé sur le port ${PORT}`);
 });
