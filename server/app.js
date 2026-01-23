@@ -51,6 +51,18 @@ app.get("/", (req, res) => {
     res.send("Attendance System Server is running");
 });
 
+// SOCKET.IO 
+
+const server = require("http").createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server, {
+  cors: { origin: "*" } // Permet d’accepter toutes les connexions
+});
+
+// Export io pour l’utiliser dans le controller
+app.set("io", io);
+
+
 // =====================
 // LANCEMENT DU SERVEUR
 // =====================
