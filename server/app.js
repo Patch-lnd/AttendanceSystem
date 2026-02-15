@@ -17,6 +17,9 @@ app.set("view engine", "ejs");
 // On précise où se trouvent les fichiers HTML (views)
 app.set("views", path.join(__dirname, "views"));
 
+// Permet de servir les fichiers JS, CSS, images, etc.
+app.use(express.static(path.join(__dirname, "public")));
+
 
 // =====================
 // MIDDLEWARES
